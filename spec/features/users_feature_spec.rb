@@ -30,7 +30,7 @@ feature "User can sign in and out" do
     end
 
     it "should not see a 'sign in' link and a 'sign up' link" do
-      visit('/')
+      # visit('/')
       expect(page).not_to have_link('Sign in')
       expect(page).not_to have_link('Sign up')
     end
