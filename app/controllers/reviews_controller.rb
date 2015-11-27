@@ -6,8 +6,17 @@ class ReviewsController < ApplicationController
   end
 
   def create
+
     @restaurant = Restaurant.find(params[:restaurant_id])
-    @restaurant.reviews.create(review_params)
+
+    if current_user.has_reviewed?(@restaurant)
+      flash[:notice] = 'You can leave only one review per restaurant'
+    else
+      @review = Review.new(review_params)
+      @review.restaurant_id = @restaurant.id
+      @review.user_id = current_user.id
+      @review.save
+    end
     redirect_to restaurants_path
   end
 
