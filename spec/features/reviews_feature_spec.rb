@@ -23,11 +23,13 @@ feature 'reviewing' do
 
     scenario "displays average ratings for all reviews" do
       leave_review('So so', '3')
+      click_link "Sign out"
+      signup(email: 'test2@example.com', password: 'testtest', password_confirmation: 'testtest' )
       leave_review('Great', '5')
-      expect(page).to have_content('Average rating: 4')
+      expect(page).to have_content('Average rating: ★★★★☆')
     end
 
-    def leave_review(thoughts, ratings)
+    def leave_review(thoughts, rating)
       visit '/restaurants'
       click_link 'Review KFC'
       fill_in 'Thoughts', with: thoughts
