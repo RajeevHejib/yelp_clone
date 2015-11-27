@@ -30,9 +30,29 @@ feature "User can sign in and out" do
     end
 
     it "should not see a 'sign in' link and a 'sign up' link" do
-      visit('/')
+      # visit('/')
       expect(page).not_to have_link('Sign in')
       expect(page).not_to have_link('Sign up')
     end
+
+    it "can not delete a restaurant not created by the user" do
+      Restaurant.create name: "KFC"
+      visit '/restaurants'
+      click_link 'Delete KFC'
+      expect(page).to have_content("Can't delete this restaurant")
+    end
+
+    it "can not edit a restaurant not created by the user" do
+      Restaurant.create name: "KFC"
+      visit '/restaurants'
+      click_link 'Edit KFC'
+      expect(page).to have_content("Can't edit this restaurant")
+    end
+
+
+
   end
+
+
+
 end
