@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 feature 'restaurants' do
+  before do
+    signup(email: 'test@example.com', password: 'testtest', password_confirmation: 'testtest' )
+  end
+
   context 'no restaurants have been added' do
     scenario 'should display a prompt to add a restaurant' do
       visit '/restaurants'
@@ -22,6 +26,7 @@ feature 'restaurants' do
   end
 
   context 'creating restaurants' do
+
     scenario 'prompts user to fill out a form, then displays the new restaurant' do
       visit '/restaurants'
       click_link 'Add a restaurant'
@@ -44,6 +49,7 @@ feature 'restaurants' do
   end
 
   context 'viewing restaurants' do
+
     let!(:kfc){Restaurant.create(name:'KFC')}
 
     scenario "lets a user view a restaurant" do
@@ -55,24 +61,32 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
-
-    before { Restaurant.create name: 'KFC' }
+    before do
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'KFC'
+      click_button 'Create Restaurant'
+    end
 
     scenario 'let a user edit a restaurant' do
-     visit '/restaurants'
-     click_link 'Edit KFC'
-     fill_in 'Name', with: 'Kentucky Fried Chicken'
-     click_button 'Update Restaurant'
-     expect(page).to have_content 'Kentucky Fried Chicken'
-     expect(current_path).to eq '/restaurants'
+       visit '/restaurants'
+       click_link 'Edit KFC'
+       fill_in 'Name', with: 'Kentucky Fried Chicken'
+       click_button 'Update Restaurant'
+       expect(page).to have_content 'Kentucky Fried Chicken'
+       expect(current_path).to eq '/restaurants'
     end
 
   end
 
 
   context "deleting restaurants" do
-
-    before {Restaurant.create name: 'KFC'}
+    before do
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'KFC'
+      click_button 'Create Restaurant'
+    end
 
     scenario 'removes a restaurant when a user click a delete link' do
       visit '/restaurants'
