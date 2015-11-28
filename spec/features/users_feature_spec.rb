@@ -39,14 +39,14 @@ feature "User can sign in and out" do
       Restaurant.create name: "KFC"
       visit '/restaurants'
       click_link 'Delete KFC'
-      expect(page).to have_content("Can't delete this restaurant")
+      expect(page).to have_content("You can't delete as you didnt create this restaurant")
     end
 
     it "can not edit a restaurant not created by the user" do
       Restaurant.create name: "KFC"
       visit '/restaurants'
       click_link 'Edit KFC'
-      expect(page).to have_content("Can't edit this restaurant")
+      expect(page).to have_content("You can't edit as you didnt create this restaurant")
     end
 
 

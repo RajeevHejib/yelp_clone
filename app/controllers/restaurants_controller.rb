@@ -1,4 +1,5 @@
 class RestaurantsController < ApplicationController
+
   def index
     @restaurants = Restaurant.all
   end
@@ -18,7 +19,7 @@ class RestaurantsController < ApplicationController
   end
 
   def restaurant_params
-    params.require(:restaurant).permit(:name)
+    params.require(:restaurant).permit(:name, :description)
   end
 
   def show
@@ -28,7 +29,7 @@ class RestaurantsController < ApplicationController
   def edit
       @restaurant = Restaurant.find(params[:id])
       if @restaurant.user != current_user
-        flash[:notice] = "Can't edit this restaurant"
+        flash[:notice] = "You can't edit as you didnt create this restaurant"
         redirect_to '/restaurants'
       end
   end
@@ -43,7 +44,7 @@ class RestaurantsController < ApplicationController
   def destroy
     @restaurant = Restaurant.find(params[:id])
     if @restaurant.user != current_user
-      flash[:notice] = "Can't delete this restaurant"
+      flash[:notice] = "You can't delete as you didnt create this restaurant"
       redirect_to('/restaurants')
     else
       @restaurant.destroy
